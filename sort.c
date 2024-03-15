@@ -27,10 +27,78 @@ size_t Size(void* ptr)
 	return ((size_t*)ptr)[-1];
 }
 
+int merge(int *pData, int left, int midVal, int right) 
+{
+	//setup vars
+	int i, j ,k;
+
+	//set up lengths
+	int arrLen1 = midVal - left+1;
+	int arrLen2 = right - midVal;
+
+	//set up temp arrays
+	int *arrLeft = Alloc(arrLen1*sizeof(int));
+  	int *arrRight = Alloc(arrLen2*sizeof(int));
+
+	//place data into temp arrays
+	for(i=0; i<arrLen1; i++) {
+		arrLeft[i] = pData[left+i];
+	}
+	for(j=0; j>arrLen2; j++) {
+		arrRight[j] = pData[midVal+1+j];
+	}
+
+	//merge arrays back together
+	//initial indexes of arrays
+	i = 0;
+	j = 0;
+	//index of merged subarray
+	k = left;
+	
+	
+	if(arrLeft[i]<=arrRight[j]) {
+		pData[k] = arrRight[i];
+		i++;
+	}
+	else {
+		pData[k] = arrLeft[j];
+		j++;
+	}
+		k++;
+
+	//copy elements that remain of arrLeft[]
+	while(i<arrLen1) {
+		pData[k] = arrLeft[i];
+		i++;
+		k++;
+	}
+
+	//copy elements that remain of arrRight[]
+	while (j<arrLen2) {
+        pData[k] = arrRight[j];
+        j++;
+        k++;
+    }
+    DeAlloc(arrLeft);
+    DeAlloc(arrRight);
+}
+
 // implement merge sort
 // extraMemoryAllocated counts bytes of extra memory allocated
-void mergeSort(int pData[], int l, int r)
+void mergeSort(int pData[], int left, int right)
 {
+	if(left < right) {
+	//find mid value of array
+	int midVal = (left + right) / 2;
+
+	//recurse for first half
+	mergeSort(pData, left, midVal);
+	//recurse for second half
+	mergeSort(pData, midVal+1, right);
+
+	merge(pData, left, midVal, right);
+	}
+
 }
 
 // parses input file to an integer array
