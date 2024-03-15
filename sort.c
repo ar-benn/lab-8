@@ -55,16 +55,17 @@ int merge(int *pData, int left, int midVal, int right)
 	//index of merged subarray
 	k = left;
 	
-	
-	if(arrLeft[i]<=arrRight[j]) {
-		pData[k] = arrRight[i];
-		i++;
-	}
-	else {
-		pData[k] = arrLeft[j];
-		j++;
-	}
+	while(i<arrLen1 && j<arrLen2) {
+		if(arrLeft[i]<=arrRight[j]) {
+			pData[k] = arrLeft[i];
+			i++;
+		}
+		else {
+			pData[k] = arrRight[j];
+			j++;
+		}
 		k++;
+	}
 
 	//copy elements that remain of arrLeft[]
 	while(i<arrLen1) {
